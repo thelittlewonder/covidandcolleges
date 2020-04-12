@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav id="nav">
-      <img src="./assets/logo.jpg" alt="Covid and Colleges" />
+      <img src="./assets/logo.svg" alt="Covid and Colleges" />
       <button>
         <a href="https://bit.ly/gocoronanocorona" target="_blank">Contribute ↗</a>
       </button>
