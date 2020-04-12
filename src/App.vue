@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav id="nav">
-      <img src="./assets/logo.jpg" height="24px" alt="Covid and Colleges" />
+      <img src="./assets/logo.jpg" alt="Covid and Colleges" />
       <button>
         <a href="https://bit.ly/gocoronanocorona" target="_blank">Contribute ↗</a>
       </button>
@@ -79,11 +79,9 @@ export default {
   name: "app",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
       collegeData: [],
       lastUpdated: "",
-      loading: true,
-      error: false
+      loading: true
     };
   },
   mounted: function() {
@@ -114,7 +112,6 @@ export default {
         })
         .catch(function(error) {
           // handle error
-          vm.error = true;
           console.log(error);
         });
     },
@@ -149,9 +146,13 @@ export default {
   //mobile only
   nav {
     padding: 1em;
+    img {
+      height: 16px;
+    }
     button {
       margin-right: 2.5em;
       font-size: 12px;
+      padding: 6px 10px !important;
     }
   }
   .container {
@@ -185,7 +186,7 @@ export default {
     .collegeList {
       grid-gap: 1.5rem;
       margin-top: 2.5em;
-      padding: 0!important;
+      padding: 0 !important;
       grid-template-columns: repeat(auto-fit, minmax(auto, 400px));
       .collegeObj {
         padding: 1em;
@@ -221,7 +222,6 @@ export default {
               margin-top: 0.5em;
               font-size: 0.875em;
               line-height: 1.5em;
-              font-size: 1em;
             }
           }
         }
@@ -230,8 +230,7 @@ export default {
   }
 }
 @media screen and (min-width: 769px) and (max-width: 1274px) {
-
-nav {
+  nav {
     padding: 1em 4em;
     button {
       margin-right: 12em;
@@ -302,7 +301,6 @@ nav {
       }
     }
   }
-
 }
 
 @media screen and (min-width: 1275px) {
@@ -341,7 +339,7 @@ nav {
         grid-gap: 3rem;
         margin-top: 5em;
         grid-template-columns: repeat(auto-fit, minmax(400px, auto));
-        padding: 0 4em!important;
+        padding: 0 4em !important;
         justify-content: center;
         .collegeObj {
           padding: 1.5em 3em;
@@ -393,6 +391,9 @@ nav {
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-property: all;
+  img {
+    height: 24px;
+  }
 }
 header,
 nav {
