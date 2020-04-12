@@ -306,6 +306,9 @@ export default {
 @media screen and (min-width: 1275px) {
   nav {
     padding: 1em 8em;
+    img {
+      height: 24px;
+    }
     button {
       margin-right: 24em;
       font-size: 12px;
@@ -391,9 +394,6 @@ nav {
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-property: all;
-  img {
-    height: 24px;
-  }
 }
 header,
 nav {
