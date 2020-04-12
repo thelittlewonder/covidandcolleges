@@ -1,45 +1,58 @@
 <template>
   <div id="app">
-    <div class="content">
-      <header>
-        <div class="info">
-          <h1>Covid and Colleges</h1>
-          <h2>A crowdsourced database of how Indian universities are handling the Covid-19 crisis.</h2>
-          <button>
-            <a href="http://bit.ly/CovidAndColleges">Contribute ↗</a>
-          </button>
-          <p>{{updateMsg}}</p>
-        </div>
-        <div class="illustration">
-          <img src="./assets/header.jpg" alt="Fighting Corona Virus" />
-        </div>
-      </header>
-      <div class="collegeList">
-        <div class="spinner" v-if="loading">
-          <div class="dot1"></div>
-          <div class="dot2"></div>
-        </div>
-        <div class="collegeObj" v-else v-for="college in collegeData" :key="college.college_name">
-          <h3>{{college.college_name}}</h3>
-          <div class="collegeDetails">
-            <div class="row r1">
-              <div class="section">
-                <h4>Lectures</h4>
-                <p>{{college.online_class}}</p>
-              </div>
-              <div class="section">
-                <h4>Assignments & tests</h4>
-                <p>{{college.assignments}}</p>
-              </div>
+    <nav id="nav">
+      <img src="./assets/logo.jpg" height="24px" alt="Covid and Colleges" />
+      <button>
+        <a href="http://bit.ly/CovidAndColleges">Contribute ↗</a>
+      </button>
+    </nav>
+    <div class="container">
+      <div class="content">
+        <header>
+          <div class="info">
+            <h1>Covid and Colleges</h1>
+            <h2>A crowdsourced database of how Indian universities are handling the Covid-19 crisis.</h2>
+            <button>
+              <a href="http://bit.ly/CovidAndColleges">Contribute ↗</a>
+            </button>
+            <p v-if="loading"></p>
+            <p v-if="!loading">{{updateMsg}}</p>
+          </div>
+          <div class="illustration">
+            <img src="./assets/header.jpg" alt="Fighting Corona Virus" />
+          </div>
+        </header>
+        <div class="collegeList">
+          <div class="spinner" v-if="loading">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+          </div>
+          <div class="collegeObj" v-else v-for="college in collegeData" :key="college.college_name">
+            <div class="top">
+              <h3>{{college.college_name}}</h3>
+              <p :class="getStatus(college.college_status)">{{college.college_status}}</p>
+              <div class="divider"></div>
             </div>
-            <div class="row">
-              <div class="section">
-                <h4>Semester Exams</h4>
-                <p>{{college.exam}}</p>
+            <div class="collegeDetails">
+              <div class="row r1">
+                <div class="section">
+                  <h4>Lectures</h4>
+                  <p :class="getClass(college.online_class)">{{college.online_class}}</p>
+                </div>
+                <div class="section">
+                  <h4 id="test">Tests & Assignments</h4>
+                  <p :class="getClass(college.assignments)">{{college.assignments}}</p>
+                </div>
               </div>
-              <div class="section">
-                <h4>Summer Internships</h4>
-                <p>{{college.internship}}</p>
+              <div class="row">
+                <div class="section">
+                  <h4>Semester Exams</h4>
+                  <p :class="getClass(college.exam)">{{college.exam}}</p>
+                </div>
+                <div class="section">
+                  <h4>Summer Internships</h4>
+                  <p :class="getClass(college.internship)">{{college.internship}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -52,6 +65,16 @@
 <script>
 import "reset-css";
 import axios from "axios";
+window.document.body.onscroll = function() {
+  if (
+    document.body.scrollTop > 240 ||
+    document.documentElement.scrollTop > 240
+  ) {
+    document.getElementById("nav").style.top = "0";
+  } else {
+    document.getElementById("nav").style.top = "-67px";
+  }
+};
 export default {
   name: "app",
   data() {
@@ -68,7 +91,15 @@ export default {
   },
   computed: {
     updateMsg: function() {
-      return "Last updated at " + this.lastUpdated;
+      let dateObj = new Date(this.lastUpdated);
+      let time = dateObj.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true
+      });
+      let date =
+        (dateObj + "").split(" ")[1] + " " + (dateObj + "").split(" ")[2];
+      return "Last updated at " + date + ", " + time;
     }
   },
   methods: {
@@ -80,13 +111,34 @@ export default {
           vm.loading = false;
           vm.lastUpdated = response.data.last_entry_added_time;
           vm.collegeData = response.data.data;
-          console.log(vm.collegeData);
         })
         .catch(function(error) {
           // handle error
           vm.error = true;
           console.log(error);
         });
+    },
+    getClass: function(text) {
+      let className;
+      if (text === ("Digital" || "No Change")) {
+        className = "good";
+      } else if (text === ("On Hold" || "Cancelled")) {
+        className = "bad";
+      } else if (text === "No Update") {
+        className = "noupdate";
+      } else {
+        className = "neutral";
+      }
+      return className;
+    },
+    getStatus: function(status) {
+      let className;
+      if (status === "Closed") {
+        className = "closed";
+      } else {
+        className = "opened";
+      }
+      return className;
     }
   }
 };
@@ -95,8 +147,15 @@ export default {
 <style lang="scss">
 @media screen and (max-width: 767px) {
   //mobile only
-  #app {
+  nav {
     padding: 1em;
+    button {
+      margin-right: 2.5em;
+      font-size: 12px;
+    }
+  }
+  .container {
+    padding: 0.75em;
     .content {
       padding: 1.5em;
       header {
@@ -109,9 +168,10 @@ export default {
             font-size: 0.875em;
           }
           button {
-            font-size: 1em;
+            font-size: 0.75em;
           }
           p {
+            font-size: 0.875em;
             margin-top: 1.5em;
           }
         }
@@ -123,27 +183,45 @@ export default {
       }
     }
     .collegeList {
-      grid-gap: 1rem;
-      margin-top: 2em;
-      grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+      grid-gap: 1.5rem;
+      margin-top: 2.5em;
+      padding: 0!important;
+      grid-template-columns: repeat(auto-fit, minmax(auto, 400px));
       .collegeObj {
-        padding: 1.5em;
+        padding: 1em;
         h3 {
           font-size: 1.25em;
           line-height: 1.3em;
         }
         .collegeDetails {
-          flex-direction: column;
-          .section {
+          flex-direction: row;
+          justify-content: space-between;
+          .section:first-child {
+            margin-bottom: 2em;
             margin-top: 1em;
+          }
+          .section {
+            #test {
+              visibility: hidden;
+              position: relative;
+            }
+            #test:after {
+              visibility: visible;
+              position: absolute;
+              top: 0;
+              left: 0;
+              content: "Assessments";
+            }
             h4 {
               margin-bottom: 0.25em;
+              font-size: 0.75em;
             }
             p {
-              padding: 0.25em 0.75em;
+              padding: 0.5em 1em;
               margin-top: 0.5em;
               font-size: 0.875em;
               line-height: 1.5em;
+              font-size: 1em;
             }
           }
         }
@@ -151,44 +229,91 @@ export default {
     }
   }
 }
-@media screen and (min-width: 769px) and (max-width: 1055px) {
-  //tab
-  #app {
-    padding: 2.5em;
+@media screen and (min-width: 769px) and (max-width: 1274px) {
+
+nav {
+    padding: 1em 4em;
+    button {
+      margin-right: 12em;
+      font-size: 12px;
+    }
+  }
+  .container {
+    padding: 1.5em;
     .content {
       padding: 3em;
       header {
-        flex-direction: column-reverse;
-        .illustration {
-          img {
-            margin-bottom: 1.5em;
+        flex-direction: row;
+        align-items: center;
+        .info {
+          max-width: 40%;
+          margin-right: 120px;
+          h1 {
+            font-size: 1.5em;
+          }
+          h2 {
+            font-size: 1.2em;
+          }
+          button {
+            font-size: 0.875em;
+          }
+          p {
+            margin-top: 2em;
           }
         }
       }
-    }
-    .collegeList {
-      grid-gap: 2rem;
-      .collegeObj {
-        padding: 1.5em;
-        h3 {
-          font-size: 1.25em;
-        }
-        .collegeDetails {
-          .section {
-            h4 {
-              margin-bottom: 0.5em;
+      .collegeList {
+        grid-gap: 3rem;
+        margin-top: 5em;
+        grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+        justify-content: center;
+        .collegeObj {
+          padding: 1em 2em;
+          h3 {
+            font-size: 1.25em;
+            line-height: 1.5em;
+          }
+          .collegeDetails {
+            flex-direction: row;
+            .row {
+              display: flex;
+              flex-direction: column;
             }
-            p {
+            .r1 {
+              margin-right: 4em;
+            }
+            .section:first-child {
+              margin: 0.5em 0 2em 0;
+            }
+            .section {
+              h4 {
+                margin-bottom: 0.5em;
+                font-size: 0.75em;
+              }
+              p {
+                padding: 0.5em 1em;
+                margin-top: 0.5em;
+                font-size: 0.875em;
+                line-height: 1.5em;
+              }
             }
           }
         }
       }
     }
   }
+
 }
-@media screen and (min-width: 1056px) {
-  //laptops
-  #app {
+
+@media screen and (min-width: 1275px) {
+  nav {
+    padding: 1em 8em;
+    button {
+      margin-right: 24em;
+      font-size: 12px;
+    }
+  }
+  .container {
     padding: 2.5em;
     .content {
       padding: 4em;
@@ -213,11 +338,13 @@ export default {
         }
       }
       .collegeList {
-        grid-gap: 2rem;
-        margin-top: 4em;
+        grid-gap: 3rem;
+        margin-top: 5em;
         grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+        padding: 0 4em!important;
+        justify-content: center;
         .collegeObj {
-          padding: 1.5em;
+          padding: 1.5em 3em;
           h3 {
             font-size: 1.25em;
             line-height: 1.5em;
@@ -229,16 +356,18 @@ export default {
               flex-direction: column;
             }
             .r1 {
-              margin-right: 3em;
+              margin-right: 4em;
+            }
+            .section:first-child {
+              margin: 0.5em 0 2em 0;
             }
             .section {
-              margin-top: 1.75em;
               h4 {
                 margin-bottom: 0.5em;
-                font-size: 0.875em;
+                font-size: 0.75em;
               }
               p {
-                padding: 0.25em 0.75em;
+                padding: 0.5em 1em;
                 margin-top: 0.5em;
                 font-size: 0.875em;
                 line-height: 1.5em;
@@ -250,8 +379,40 @@ export default {
     }
   }
 }
-
-#app {
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px rgba(68, 68, 68, 0.05);
+  position: fixed;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 999;
+  top: -67px;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transition-property: all;
+}
+header,
+nav {
+  button {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    padding: 8px 12px;
+    background: #7bbf75;
+    border: 1px solid #6aa565;
+    box-sizing: border-box;
+    border-radius: 2px;
+    cursor: pointer;
+    align-self: flex-start;
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}
+.container {
   background-color: #f6f6f6;
   .content {
     max-width: 1192px;
@@ -284,21 +445,6 @@ export default {
           line-height: 1.125em;
           color: rgba(70, 42, 79, 0.5);
         }
-        button {
-          font-family: "IBM Plex Mono", monospace;
-          font-weight: 700;
-          padding: 8px 12px;
-          background: #7bbf75;
-          border: 1px solid #6aa565;
-          box-sizing: border-box;
-          border-radius: 2px;
-          cursor: pointer;
-          align-self: flex-start;
-          a {
-            color: #ffffff;
-            text-decoration: none;
-          }
-        }
       }
       .illustration {
         img {
@@ -309,57 +455,90 @@ export default {
     }
     .collegeList {
       display: grid;
-      justify-content: center;
+      padding: 0;
       .collegeObj {
-        background: #ffffff;
         border-radius: 4px;
-        border: 1px solid rgba(285, 31, 24, 0.05);
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        h3 {
-          font-family: "IBM Plex Sans", sans-serif;
-          color: #6d72c5;
-          font-weight: 600;
+        background: #ffffff;
+        border: 1px solid #eeeeee;
+        box-sizing: border-box;
+        //box-shadow: 0px 6px 12px rgba(51, 51, 51, 0.05);
+        .top {
+          display: flex;
+          flex-direction: column;
+          h3 {
+            font-family: "IBM Plex Sans", sans-serif;
+            color: #462a4f;
+            font-weight: 600;
+          }
+          p {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 13px;
+            line-height: 18px;
+            margin-top: 4px;
+            font-style: normal;
+            font-weight: normal;
+          }
+          .divider {
+            height: 0;
+            width: 100%;
+            border: 0.5px solid #eee;
+            margin: 1em 0;
+          }
         }
         .collegeDetails {
           display: flex;
           .section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             h4 {
               font-family: "IBM Plex Sans", sans-serif;
               font-style: normal;
-              font-weight: 600;
               letter-spacing: 0.05em;
               text-transform: uppercase;
-              color: rgba(70, 42, 78, 0.75);
+              color: #666666;
             }
             p {
               border-radius: 2px;
               font-family: "IBM Plex Mono", monospace;
               font-style: normal;
-              font-weight: 700;
-              font-size: 14px;
-              line-height: 18px;
+              font-weight: 600;
             }
           }
         }
       }
-
       .good {
-        background: rgba(123, 191, 117, 0.1);
-        color: #72bb6c;
+        background: #f1f9f1;
+        color: #6aa565;
       }
       .bad {
-        background: rgba(235, 62, 111, 0.15);
-        color: #eb3e6f;
+        background: #ffedf1;
+        color: #d53973;
       }
       .noupdate {
-        background: rgba(155, 155, 155, 0.1);
-        color: #777;
+        background: #eee;
+        color: #666;
       }
       .neutral {
-        background: rgba(121, 52, 74, 0.1);
-        color: #79344a;
+        background: #fcf8ee;
+        color: #d2a226;
+      }
+      .closed {
+        color: #fd436d;
+      }
+      .opened {
+        color: #6d72c5;
+      }
+
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 0.5s;
+      }
+      .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
       }
 
       // loader
@@ -381,7 +560,7 @@ export default {
         display: inline-block;
         position: absolute;
         top: 0;
-        background-color: #6D72C5;
+        background-color: #6d72c5;
         border-radius: 100%;
 
         -webkit-animation: sk-bounce 2s infinite ease-in-out;
