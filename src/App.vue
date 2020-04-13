@@ -221,6 +221,7 @@ export default {
       grid-gap: 1.5rem;
       margin-top: 2.5em;
       padding: 0 !important;
+      justify-content: center;
       grid-template-columns: repeat(auto-fit, minmax(auto, 400px));
       .collegeObj {
         padding: 1em;
@@ -264,7 +265,7 @@ export default {
     }
   }
 }
-@media screen and (min-width: 769px) and (max-width: 1274px) {
+@media screen and (min-width: 768px) and (max-width: 1274px) {
   nav {
     padding: 1em 4em;
     button {
