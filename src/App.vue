@@ -40,7 +40,7 @@
                   <p :class="getClass(college.online_class)">{{college.online_class}}</p>
                 </div>
                 <div class="section">
-                  <h4 id="test">Tests & Assignments</h4>
+                  <h4 class="test">Tests & Assignments</h4>
                   <p :class="getClass(college.assignments)">{{college.assignments}}</p>
                 </div>
               </div>
@@ -202,11 +202,11 @@ export default {
             margin-top: 1em;
           }
           .section {
-            #test {
+            .test {
               visibility: hidden;
               position: relative;
             }
-            #test:after {
+            .test:after {
               visibility: visible;
               position: absolute;
               top: 0;
