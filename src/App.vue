@@ -3,7 +3,7 @@
     <nav id="nav">
       <img src="./assets/logo.svg" alt="Covid and Colleges" />
       <button>
-        <a href="https://bit.ly/gocoronanocorona" target="_blank">Contribute ↗</a>
+        <a href="https://bit.ly/gocoronanocorona" rel="noreferrer" target="_blank">Contribute ↗</a>
       </button>
     </nav>
     <div class="container">
@@ -13,7 +13,7 @@
             <h1>Covid and Colleges</h1>
             <h2>A crowdsourced database of how Indian universities are handling the COVID-19 crisis.</h2>
             <button>
-              <a href="https://bit.ly/gocoronanocorona" target="_blank">Contribute ↗</a>
+              <a href="https://bit.ly/gocoronanocorona" rel="noreferrer" target="_blank">Contribute ↗</a>
             </button>
             <p v-if="loading"></p>
             <p v-if="!loading">{{updateMsg}}</p>
