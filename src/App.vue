@@ -63,11 +63,11 @@
         </div>
         <footer>
           <div class="disc">
-            If there are any errors, please <a
+            Something wrong with the data? Please <a
               href="https://bit.ly/reportErrors"
               rel="noreferrer"
               target="_blank"
-            >report it here</a> & we'll get it fixed :)
+            >report it here</a> & we'll fix it :)
           </div>
           <div class="showbazi">
             <!--yeh jigar ki wajah se daal rha hu-->
