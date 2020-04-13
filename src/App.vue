@@ -11,7 +11,7 @@
         <header>
           <div class="info">
             <h1>Covid and Colleges</h1>
-            <h2>A crowdsourced database of how Indian universities are handling the Covid-19 crisis.</h2>
+            <h2>A crowdsourced database of how Indian universities are handling the COVID-19 crisis.</h2>
             <button>
               <a href="https://bit.ly/gocoronanocorona" target="_blank">Contribute ↗</a>
             </button>
@@ -117,14 +117,14 @@ export default {
     },
     getClass: function(text) {
       let className;
-      if (text === ("Digital" || "No Change")) {
-        className = "good";
-      } else if (text === ("On Hold" || "Cancelled")) {
-        className = "bad";
-      } else if (text === "No Update") {
-        className = "noupdate";
-      } else {
-        className = "neutral";
+      if(text=='Digital'||text=='No Change'){
+        className = 'good';
+      } else if(text=='On Hold'||text=='Cancelled'){
+        className = 'bad';
+      } else if (text=='No Update'){
+        className = 'noupdate'
+      } else if (text=='Postponed'||text=='Delayed'){
+        className = 'neutral'
       }
       return className;
     },
