@@ -158,7 +158,7 @@ export default {
   .container {
     padding: 0.75em;
     .content {
-      padding: 1.5em;
+      padding: 1em;
       header {
         flex-direction: column-reverse;
         .info {
@@ -196,7 +196,7 @@ export default {
         }
         .collegeDetails {
           flex-direction: row;
-          justify-content: space-between;
+          justify-content: space-around;
           .section:first-child {
             margin-bottom: 2em;
             margin-top: 1em;
