@@ -216,6 +216,7 @@ export default {
             h4 {
               margin-bottom: 0.25em;
               font-size: 0.75em;
+              line-height: 1.3em;
             }
             p {
               padding: 0.5em 1em;
@@ -288,6 +289,7 @@ export default {
               h4 {
                 margin-bottom: 0.5em;
                 font-size: 0.75em;
+                line-height: 1.5em;
               }
               p {
                 padding: 0.5em 1em;
