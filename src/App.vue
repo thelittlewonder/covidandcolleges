@@ -26,12 +26,19 @@
             <img src="./assets/header.jpg" alt="Fighting Corona Virus" />
           </div>
         </header>
+        <div class="search">
+          <input type="text" v-model="query" placeholder="Search" />
+        </div>
+        <div class v-if="currentView.length==0 && !loading">
+          <h2>No results found for {{query}}.</h2>
+          <h3>There might be a spelling mistake. You can also help extend this list by contributing</h3>
+        </div>
         <div class="collegeList">
           <div class="spinner" v-if="loading">
             <div class="dot1"></div>
             <div class="dot2"></div>
           </div>
-          <div class="collegeObj" v-else v-for="college in collegeData" :key="college.college_name">
+          <div class="collegeObj" v-else v-for="college in currentView" :key="college.college_name">
             <div class="top">
               <h3>{{college.college_name}}</h3>
               <p :class="getStatus(college.college_status)">{{college.college_status}}</p>
@@ -63,7 +70,8 @@
         </div>
         <footer>
           <div class="disc">
-            Something wrong with the data? Please <a
+            Something wrong with the data? Please
+            <a
               href="https://bit.ly/reportErrors"
               rel="noreferrer"
               target="_blank"
@@ -100,6 +108,8 @@ export default {
   data() {
     return {
       collegeData: [],
+      currentView: [],
+      query: "",
       lastUpdated: "",
       loading: true
     };
@@ -120,6 +130,16 @@ export default {
       return "Last updated at " + date + ", " + time;
     }
   },
+  watch: {
+    query: function() {
+      this.currentView = this.collegeData.filter(college => {
+        var vm = this;
+        return college.college_name
+          .toLowerCase()
+          .includes(vm.query.toLowerCase());
+      });
+    }
+  },
   methods: {
     makeRequest: function() {
       let vm = this;
@@ -129,6 +149,7 @@ export default {
           vm.loading = false;
           vm.lastUpdated = response.data.last_entry_added_time;
           vm.collegeData = response.data.data;
+          vm.currentView = vm.collegeData;
         })
         .catch(function(error) {
           // handle error
@@ -182,17 +203,16 @@ export default {
       .disc {
         margin-top: 2em;
       }
-
-    footer{
-      .disc{
-        font-size: 14px;
-        line-height: 18px;
+      footer {
+        .disc {
+          font-size: 14px;
+          line-height: 18px;
+        }
+        .showbazi {
+          font-size: 12px;
+          line-height: 16px;
+        }
       }
-      .showbazi{
-        font-size: 12px;
-        line-height: 16px;
-      }
-    }
       header {
         flex-direction: column-reverse;
         .info {
@@ -219,7 +239,7 @@ export default {
     }
     .collegeList {
       grid-gap: 1.5rem;
-      margin-top: 2.5em;
+      margin-top: 1.5em;
       padding: 0 !important;
       justify-content: center;
       grid-template-columns: repeat(auto-fit, minmax(auto, 400px));
@@ -274,13 +294,12 @@ export default {
     }
   }
   .container {
-
-    footer{
-      .disc{
+    footer {
+      .disc {
         font-size: 16px;
         line-height: 22px;
       }
-      .showbazi{
+      .showbazi {
         font-size: 14px;
         line-height: 20px;
       }
@@ -313,8 +332,8 @@ export default {
       }
       .collegeList {
         grid-gap: 3rem;
-        margin-top: 5em;
-        grid-template-columns: repeat(auto-fit, minmax(auto,450px));
+        margin-top: 2em;
+        grid-template-columns: repeat(auto-fit, minmax(auto, 450px));
         justify-content: center;
         .collegeObj {
           padding: 1em 2em;
@@ -367,12 +386,12 @@ export default {
   }
   .container {
     padding: 2.5em;
-    footer{
-      .disc{
+    footer {
+      .disc {
         font-size: 16px;
         line-height: 22px;
       }
-      .showbazi{
+      .showbazi {
         font-size: 14px;
         line-height: 20px;
       }
@@ -404,7 +423,7 @@ export default {
       }
       .collegeList {
         grid-gap: 3rem;
-        margin-top: 5em;
+        margin-top: 2em;
         grid-template-columns: repeat(auto-fit, minmax(500px, 400px));
         padding: 0 4em !important;
         justify-content: center;
@@ -476,6 +495,33 @@ nav {
       text-decoration: none;
     }
   }
+}
+.search {
+  input {
+    padding: 0.5em;
+    font-family: "IBM Plex Sans", sans-serif;
+    color: #777;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-size: 0.875em;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    transition-property: all;
+    background-image: url(./assets/search.svg);
+    background-repeat: no-repeat;
+    background-position: 8px 8px;
+    background-size: 16px 16px;
+    text-indent: 24px;
+    &:focus {
+      outline: none;
+      border: 1px solid #6d72c5;
+      background-color: #fff;
+    }
+  }
+}
+::-webkit-input-placeholder {
+  /* Edge */
+  color: #aaa;
 }
 .container {
   background-color: #f6f6f6;
@@ -625,7 +671,6 @@ nav {
       .opened {
         color: #6d72c5;
       }
-
       // loader
       .spinner {
         margin: 100px auto;
