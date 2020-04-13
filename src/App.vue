@@ -13,7 +13,11 @@
             <h1>Covid and Colleges</h1>
             <h2>A crowdsourced database of how Indian universities are handling the COVID-19 crisis.</h2>
             <button>
-              <a href="https://bit.ly/gocoronanocorona" rel="noreferrer" target="_blank">Contribute ↗</a>
+              <a
+                href="https://bit.ly/gocoronanocorona"
+                rel="noreferrer"
+                target="_blank"
+              >Contribute ↗</a>
             </button>
             <p v-if="loading"></p>
             <p v-if="!loading">{{updateMsg}}</p>
@@ -57,6 +61,22 @@
             </div>
           </div>
         </div>
+        <footer>
+          <div class="disc">
+            If there are any errors, please <a
+              href="https://bit.ly/reportErrors"
+              rel="noreferrer"
+              target="_blank"
+            >report it here</a> & we'll get it fixed :)
+          </div>
+          <div class="showbazi">
+            <!--yeh jigar ki wajah se daal rha hu-->
+            💻 Put together by
+            <a href="http://abhishk.me/?ref=covid">Abhishek</a>,
+            <a href="https://www.linkedin.com/in/ekanshbansal10/">Ekansh</a> and
+            <a href="https://jigarc.netlify.com">Jigar</a>.
+          </div>
+        </footer>
       </div>
     </div>
   </div>
@@ -117,14 +137,14 @@ export default {
     },
     getClass: function(text) {
       let className;
-      if(text=='Digital'||text=='No Change'){
-        className = 'good';
-      } else if(text=='On Hold'||text=='Cancelled'){
-        className = 'bad';
-      } else if (text=='No Update'){
-        className = 'noupdate'
-      } else if (text=='Postponed'||text=='Delayed'){
-        className = 'neutral'
+      if (text == "Digital" || text == "No Change") {
+        className = "good";
+      } else if (text == "On Hold" || text == "Cancelled") {
+        className = "bad";
+      } else if (text == "No Update") {
+        className = "noupdate";
+      } else if (text == "Postponed" || text == "Delayed") {
+        className = "neutral";
       }
       return className;
     },
@@ -159,6 +179,20 @@ export default {
     padding: 0.75em;
     .content {
       padding: 1em;
+      .disc {
+        margin-top: 2em;
+      }
+
+    footer{
+      .disc{
+        font-size: 14px;
+        line-height: 18px;
+      }
+      .showbazi{
+        font-size: 12px;
+        line-height: 16px;
+      }
+    }
       header {
         flex-direction: column-reverse;
         .info {
@@ -239,9 +273,23 @@ export default {
     }
   }
   .container {
+
+    footer{
+      .disc{
+        font-size: 16px;
+        line-height: 22px;
+      }
+      .showbazi{
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
     padding: 1.5em;
     .content {
       padding: 3em;
+      .disc {
+        margin-top: 3em;
+      }
       header {
         flex-direction: row;
         align-items: center;
@@ -318,8 +366,21 @@ export default {
   }
   .container {
     padding: 2.5em;
+    footer{
+      .disc{
+        font-size: 16px;
+        line-height: 22px;
+      }
+      .showbazi{
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
     .content {
       padding: 4em;
+      .disc {
+        margin-top: 4em;
+      }
       header {
         flex-direction: row;
         align-items: center;
@@ -423,6 +484,34 @@ nav {
     background-color: #ffffff;
     box-shadow: 0px 6px 12px rgba(43, 143, 143, 0.1);
     border-radius: 2px;
+    footer {
+      text-align: center;
+      font-family: "IBM Plex Sans", sans-serif;
+      a {
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        transition-duration: 0.3s;
+        transition-timing-function: ease-in-out;
+        transition-property: all;
+      }
+      .disc {
+        color: #777;
+        margin-bottom: 1em;
+        a {
+          color: #6d72c5;
+          &:hover {
+            color: #484fb7;
+          }
+        }
+      }
+      .showbazi {
+        color: #444;
+        a {
+          color: #cc3660;
+        }
+      }
+    }
+
     header {
       display: flex;
       justify-content: center;
@@ -534,14 +623,6 @@ nav {
       }
       .opened {
         color: #6d72c5;
-      }
-
-      .fade-enter-active,
-      .fade-leave-active {
-        transition: opacity 0.5s;
-      }
-      .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
       }
 
       // loader
