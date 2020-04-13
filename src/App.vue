@@ -313,7 +313,7 @@ export default {
       .collegeList {
         grid-gap: 3rem;
         margin-top: 5em;
-        grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+        grid-template-columns: repeat(auto-fit, minmax(auto, 400px));
         justify-content: center;
         .collegeObj {
           padding: 1em 2em;
@@ -404,7 +404,7 @@ export default {
       .collegeList {
         grid-gap: 3rem;
         margin-top: 5em;
-        grid-template-columns: repeat(auto-fit, minmax(400px, auto));
+        grid-template-columns: repeat(auto-fit, minmax(auto,490px));
         padding: 0 4em !important;
         justify-content: center;
         .collegeObj {
