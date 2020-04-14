@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav id="nav">
-      <img src="./assets/logo.svg" alt="Covid and Colleges" />
+      <img src="./assets/logo.svg" alt="Covid and Colleges" @click="scrollTop()" />
       <button>
         <a href="https://bit.ly/gocoronanocorona" rel="noreferrer" target="_blank">Contribute ↗</a>
       </button>
@@ -26,14 +26,11 @@
             <img src="./assets/header.jpg" alt="Fighting Corona Virus" />
           </div>
         </header>
-        <div class="search">
-          <input type="text" v-model="query" placeholder="Search" />
-        </div>
-        <div class v-if="currentView.length==0 && !loading">
-          <h2>No results found for {{query}}.</h2>
-          <h3>There might be a spelling mistake. You can also help extend this list by contributing</h3>
-        </div>
         <div class="collegeList">
+          <div class="empty"></div>
+          <div class="search" v-if="!loading">
+            <input type="text" v-model="query" placeholder="Search" />
+          </div>
           <div class="spinner" v-if="loading">
             <div class="dot1"></div>
             <div class="dot2"></div>
@@ -66,6 +63,18 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="empty-state" v-if="currentView.length==0 && !loading">
+            <img src="./assets/emptystate.svg" alt="No Results" />
+            <h2>No results found for "{{query}}".</h2>
+            <h3>
+              Please try again, there might be a spelling mistake. You can also help
+              <a
+                href="https://bit.ly/gocoronanocorona"
+                rel="noreferrer"
+                target="_blank"
+              >extend this list by contributing</a>.
+            </h3>
           </div>
         </div>
         <footer>
@@ -177,6 +186,13 @@ export default {
         className = "opened";
       }
       return className;
+    },
+    scrollTop: function() {
+      const c = document.documentElement.scrollTop || document.body.scrollTop;
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollTop);
+        window.scrollTo(0, c - c / 10);
+      }
     }
   }
 };
@@ -194,6 +210,31 @@ export default {
       margin-right: 2.5em;
       font-size: 12px;
       padding: 6px 10px !important;
+    }
+  }
+  .empty {
+    display: none;
+  }
+  .empty-state {
+    margin: 3em 0;
+    padding: 0 1em;
+    img {
+      height: 64px !important;
+    }
+    h2 {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 0.5em 0 0.3em 0;
+    }
+    h3 {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+  .search {
+    margin: 1em 1em 0 0;
+    input {
+      width: 100%;
     }
   }
   .container {
@@ -286,6 +327,19 @@ export default {
   }
 }
 @media screen and (min-width: 768px) and (max-width: 1274px) {
+  .empty-state {
+    grid-column: 1 / span 2;
+    margin-bottom: 4em;
+    h2 {
+      font-size: 20px;
+      line-height: 26px;
+      margin: 0.5em 0 0.3em 0;
+    }
+    h3 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
   nav {
     padding: 1em 4em;
     button {
@@ -328,6 +382,13 @@ export default {
           p {
             margin-top: 2em;
           }
+        }
+      }
+      .search {
+        padding-top: 3em;
+        text-align: right;
+        input {
+          min-width: 220px;
         }
       }
       .collegeList {
@@ -374,6 +435,19 @@ export default {
 }
 
 @media screen and (min-width: 1275px) {
+  .empty-state {
+    grid-column: 1 / span 2;
+    margin-bottom: 4em;
+    h2 {
+      font-size: 20px;
+      line-height: 26px;
+      margin: 0.5em 0 0.3em 0;
+    }
+    h3 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
   nav {
     padding: 1em 8em;
     img {
@@ -419,6 +493,13 @@ export default {
           p {
             margin-top: 3em;
           }
+        }
+      }
+      .search {
+        padding-top: 3em;
+        text-align: right;
+        input {
+          min-width: 220px;
         }
       }
       .collegeList {
@@ -477,6 +558,34 @@ nav {
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-property: all;
+  img {
+    cursor: pointer;
+  }
+}
+.empty-state {
+  text-align: center;
+  img {
+    height: 72px;
+  }
+  h2 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 600;
+    color: #462a4f;
+  }
+  h3 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(70, 42, 79, 0.5);
+    a {
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      transition-duration: 0.3s;
+      transition-timing-function: ease-in-out;
+      transition-property: all;
+      color: #6d72c5;
+    }
+  }
 }
 header,
 nav {
@@ -673,6 +782,7 @@ nav {
       }
       // loader
       .spinner {
+        grid-column: 1 / span2;
         margin: 100px auto;
         width: 40px;
         height: 40px;
