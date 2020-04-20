@@ -29,7 +29,7 @@
         <div class="collegeList">
           <div class="empty"></div>
           <div class="search" v-if="!loading">
-            <input type="text" v-model="query" placeholder="Search" />
+            <input type="search" v-model="query" placeholder="Search" />
           </div>
           <div class="spinner" v-if="loading">
             <div class="dot1"></div>
