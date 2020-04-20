@@ -77,7 +77,7 @@
             </h3>
           </div>
         </div>
-        <footer>
+        <footer v-if="!loading">
           <div class="disc">
             Something wrong with the data? Please
             <a
