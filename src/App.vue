@@ -153,7 +153,7 @@ export default {
     makeRequest: function() {
       let vm = this;
       axios
-        .get("https://covid-and-colleges--jigar.repl.co/getData")
+        .get("https://covid-and-colleges.jigar.repl.co/getData")
         .then(function(response) {
           vm.loading = false;
           vm.lastUpdated = response.data.last_entry_added_time;
